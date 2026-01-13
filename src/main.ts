@@ -1,18 +1,12 @@
 import { Plugin, PluginSettingTab, App, Setting } from "obsidian";
-import { ClaudeCodeTerminalView, VIEW_TYPE_CLAUDE_CODE } from "./TerminalView";
+import { ClaudeCodeTerminalView } from "./TerminalView";
 import { existsSync } from "fs";
 import { exec } from "child_process";
 import { promisify } from "util";
+import type { ClaudeCodeSettings } from "./types";
+import { VIEW_TYPE_CLAUDE_CODE, DEFAULT_SETTINGS, CLAUDE_PATHS } from "./constants";
 
 const execAsync = promisify(exec);
-
-interface ClaudeCodeSettings {
-  claudePath: string;
-}
-
-const DEFAULT_SETTINGS: ClaudeCodeSettings = {
-  claudePath: "",
-};
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {
   settings: ClaudeCodeSettings = DEFAULT_SETTINGS;
@@ -38,7 +32,11 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
   }
 
   async loadSettings(): Promise<void> {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    const loadedData = await this.loadData();
+    this.settings = {
+      ...DEFAULT_SETTINGS,
+      ...(loadedData as Partial<ClaudeCodeSettings> | null),
+    };
   }
 
   async saveSettings(): Promise<void> {
@@ -67,36 +65,36 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
       return this.settings.claudePath;
     }
 
-    // Platform-specific common paths
-    const homedir = process.env.HOME || process.env.USERPROFILE || "";
-    const paths =
-      process.platform === "win32"
-        ? [
-            `${process.env.APPDATA}\\npm\\claude.cmd`,
-            `${homedir}\\.npm-global\\claude.cmd`,
-            `${process.env.LOCALAPPDATA}\\Programs\\claude\\claude.exe`,
-          ]
-        : [
-            "/opt/homebrew/bin/claude",
-            "/usr/local/bin/claude",
-            "/usr/bin/claude",
-            `${homedir}/.local/bin/claude`,
-            `${homedir}/.npm-global/bin/claude`,
-          ];
+    const homedir = process.env.HOME ?? process.env.USERPROFILE ?? "";
+    const isWindows = process.platform === "win32";
 
-    // Check common paths (sync is fine here, only runs once)
+    // Get platform-specific paths with env var substitution
+    const pathTemplates = isWindows ? CLAUDE_PATHS.windows : CLAUDE_PATHS.unix;
+    const paths = pathTemplates.map((template) =>
+      template
+        .replace("${HOME}", homedir)
+        .replace("${APPDATA}", process.env.APPDATA ?? "")
+        .replace("${LOCALAPPDATA}", process.env.LOCALAPPDATA ?? "")
+    );
+
+    // Check common paths
     for (const p of paths) {
-      if (existsSync(p)) return p;
+      if (p && existsSync(p)) {
+        return p;
+      }
     }
 
     // Try which/where command
     try {
-      const cmd = process.platform === "win32" ? "where claude" : "which claude";
+      const cmd = isWindows ? "where claude" : "which claude";
       const { stdout } = await execAsync(cmd);
       const match = stdout.split(/\r?\n/).find((l) => l.trim());
-      if (match) return match.trim();
-    } catch {
-      // Not found via which
+      if (match) {
+        return match.trim();
+      }
+    } catch (error) {
+      // Command not found - this is expected if claude isn't in PATH
+      console.debug("Claude CLI not found in PATH:", error);
     }
 
     return "claude";

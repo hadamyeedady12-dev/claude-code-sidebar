@@ -7170,9 +7170,11 @@ var CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
   <!-- Cute small smile (outline) -->
   <rect x="8.5" y="8" width="3" height="1" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Small cute arms (outline) -->
-  <rect x="0.5" y="5.5" width="1.5" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
-  <rect x="18" y="5.5" width="1.5" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+  <!-- Left arm (outline) -->
+  <rect x="0.5" y="5" width="2" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+
+  <!-- Right arm (outline) -->
+  <rect x="17.5" y="5" width="2" height="4" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
   <!-- Chubby body (outline) -->
   <rect x="5.5" y="10.5" width="9" height="1.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>

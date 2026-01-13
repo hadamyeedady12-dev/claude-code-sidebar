@@ -1,0 +1,87 @@
+.claude-code-terminal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #1e1e1e;
+  overflow: hidden;
+}
+
+.claude-code-xterm-wrapper {
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+  overflow: hidden;
+}
+
+.claude-code-xterm-wrapper .xterm {
+  height: 100%;
+}
+
+.claude-code-xterm-wrapper .xterm-viewport {
+  overflow-y: auto !important;
+}
+
+.claude-code-terminal-toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background-color: #252526;
+  border-top: 1px solid #3c3c3c;
+}
+
+.claude-code-terminal-toolbar button {
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.claude-code-terminal-toolbar .clickable-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.claude-code-terminal-toolbar .clickable-icon:hover {
+  background-color: #3c3c3c;
+}
+
+/* Light theme support */
+.theme-light .claude-code-terminal-container {
+  background-color: #f5f5f5;
+}
+
+.theme-light .claude-code-terminal-toolbar {
+  background-color: #e8e8e8;
+  border-top-color: #d0d0d0;
+}
+
+.theme-light .claude-code-terminal-toolbar .clickable-icon:hover {
+  background-color: #d0d0d0;
+}
+
+/* xterm cursor fix */
+.xterm-cursor-layer {
+  z-index: 1;
+}
+
+/* Scrollbar styling */
+.claude-code-xterm-wrapper .xterm-viewport::-webkit-scrollbar {
+  width: 10px;
+}
+
+.claude-code-xterm-wrapper .xterm-viewport::-webkit-scrollbar-track {
+  background: #1e1e1e;
+}
+
+.claude-code-xterm-wrapper .xterm-viewport::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 5px;
+}
+
+.claude-code-xterm-wrapper .xterm-viewport::-webkit-scrollbar-thumb:hover {
+  background: #4f4f4f;
+}

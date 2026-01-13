@@ -1,0 +1,24 @@
+{
+  "name": "claude-code-sidebar",
+  "version": "2.0.0",
+  "description": "Run Claude Code CLI in Obsidian sidebar with full terminal emulation",
+  "main": "main.js",
+  "scripts": {
+    "build": "node esbuild.config.mjs",
+    "dev": "node esbuild.config.mjs --watch"
+  },
+  "keywords": ["obsidian", "plugin", "claude", "terminal", "cli"],
+  "author": "songhyeon-u",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "esbuild": "^0.20.0",
+    "obsidian": "latest",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "@xterm/xterm": "^5.5.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/addon-web-links": "^0.11.0"
+  }
+}

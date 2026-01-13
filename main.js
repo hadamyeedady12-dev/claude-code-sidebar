@@ -6918,7 +6918,11 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
     this.isDisposed = false;
     this.resizeObserver = null;
     this.fitTimeoutId = null;
+    this.stabilizeTimeoutId = null;
     this.layoutChangeHandler = null;
+    this.activeLeafHandler = null;
+    this.fitRetryCount = 0;
+    this.fitRetryLimit = 10;
     this.plugin = plugin;
   }
   getViewType() {
@@ -6949,10 +6953,13 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
       this.app.setting.open();
       this.app.setting.openTabById(this.plugin.manifest.id);
     };
+    const monospaceFont = getComputedStyle(document.body).getPropertyValue("--font-monospace").trim();
+    const fallbackFont = '"JetBrainsMono Nerd Font", "MesloLGS NF", Menlo, Monaco, "Courier New", monospace';
+    const terminalFont = monospaceFont ? `${monospaceFont}, ${fallbackFont}` : fallbackFont;
     this.terminal = new import_xterm.Terminal({
       cursorBlink: true,
       convertEol: true,
-      fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+      fontFamily: terminalFont,
       fontSize: 12,
       allowProposedApi: true,
       theme: {
@@ -6979,7 +6986,20 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
     };
     this.app.workspace.on("layout-change", this.layoutChangeHandler);
     this.app.workspace.on("resize", this.layoutChangeHandler);
+    this.activeLeafHandler = (leaf) => {
+      if (!this.isDisposed && leaf === this.leaf) {
+        this.debouncedFit();
+      }
+    };
+    this.app.workspace.on("active-leaf-change", this.activeLeafHandler);
     this.performInitialFit();
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        if (!this.isDisposed) {
+          this.debouncedFit();
+        }
+      });
+    }
     this.terminal.onData((data) => {
       if (this.ptyProcess && this.ptyProcess.stdin) {
         this.ptyProcess.stdin.write(data);
@@ -6990,6 +7010,9 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
   notifyResize() {
     if (this.ptyProcess && this.ptyProcess.stdio && this.ptyProcess.stdio[3]) {
       const { cols, rows } = this.terminal;
+      if (cols < 2 || rows < 2) {
+        return;
+      }
       try {
         this.ptyProcess.stdio[3].write(`R:${rows}:${cols}
 `);
@@ -7001,33 +7024,84 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
     if (this.fitTimeoutId) {
       clearTimeout(this.fitTimeoutId);
     }
+    if (this.stabilizeTimeoutId) {
+      clearTimeout(this.stabilizeTimeoutId);
+      this.stabilizeTimeoutId = null;
+    }
     this.fitTimeoutId = setTimeout(() => {
-      if (!this.isDisposed && this.fitAddon && this.terminal) {
-        requestAnimationFrame(() => {
-          try {
-            this.fitAddon.fit();
-            this.notifyResize();
-            this.terminal.scrollToBottom();
-          } catch (e) {
+      if (!this.isDisposed && this.fitAddon && this.terminal && this.terminalContainer) {
+        const rect = this.terminalContainer.getBoundingClientRect();
+        if (rect.width < 20 || rect.height < 20) {
+          this.fitRetryCount += 1;
+          if (this.fitRetryCount < this.fitRetryLimit) {
+            this.debouncedFit();
           }
+          return;
+        }
+        this.fitRetryCount = 0;
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            try {
+              this.fitAddon.fit();
+              this.notifyResize();
+              this.terminal.refresh(0, this.terminal.rows - 1);
+              this.terminal.scrollToBottom();
+              this.stabilizeTimeoutId = setTimeout(() => {
+                if (!this.isDisposed && this.fitAddon && this.terminal && this.terminalContainer) {
+                  const stabilizeRect = this.terminalContainer.getBoundingClientRect();
+                  if (stabilizeRect.width < 20 || stabilizeRect.height < 20) {
+                    return;
+                  }
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      try {
+                        this.fitAddon.fit();
+                        this.notifyResize();
+                        this.terminal.refresh(0, this.terminal.rows - 1);
+                        this.terminal.scrollToBottom();
+                      } catch (e) {
+                      }
+                    });
+                  });
+                }
+              }, 160);
+            } catch (e) {
+            }
+          });
         });
       }
-    }, 50);
+    }, 100);
   }
   performInitialFit() {
+    if (this.terminalContainer) {
+      void this.terminalContainer.offsetHeight;
+    }
     const fitWithRetry = (attempts) => {
       if (this.isDisposed || attempts <= 0)
         return;
       requestAnimationFrame(() => {
-        try {
-          this.fitAddon.fit();
-          this.notifyResize();
-        } catch (e) {
-        }
-        setTimeout(() => fitWithRetry(attempts - 1), 100);
+        requestAnimationFrame(() => {
+          try {
+            if (this.terminalContainer) {
+              const rect = this.terminalContainer.getBoundingClientRect();
+              if (rect.width < 20 || rect.height < 20) {
+                if (attempts > 1) {
+                  setTimeout(() => fitWithRetry(attempts - 1), 150);
+                }
+                return;
+              }
+            }
+            this.fitAddon.fit();
+            this.notifyResize();
+          } catch (e) {
+          }
+          if (this.terminal && this.terminal.cols <= 2 && attempts > 1) {
+            setTimeout(() => fitWithRetry(attempts - 1), 150);
+          }
+        });
       });
     };
-    setTimeout(() => fitWithRetry(5), 50);
+    setTimeout(() => fitWithRetry(8), 300);
   }
   async startSession() {
     var _a, _b;
@@ -7059,12 +7133,16 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
         });
       } else {
         const pythonCode = `
-import os,sys,pty,select,array,fcntl,termios
+import os,sys,pty,select,array,fcntl,termios,signal
 m,p_v=pty.openpty()
 r,c=os.environ.get('ROWS','24'),os.environ.get('COLS','80')
 fcntl.ioctl(m,termios.TIOCSWINSZ,array.array('h',[int(r),int(c),0,0]))
-if os.fork()==0:
- os.close(m);os.setsid();os.dup2(p_v,0);os.dup2(p_v,1);os.dup2(p_v,2)
+pid=os.fork()
+if pid==0:
+ os.close(m);os.setsid()
+ try: fcntl.ioctl(p_v,termios.TIOCSCTTY,0)
+ except: pass
+ os.dup2(p_v,0);os.dup2(p_v,1);os.dup2(p_v,2)
  try:os.execvp(sys.argv[1],sys.argv[1:])
  except:os._exit(1)
 os.close(p_v)
@@ -7087,6 +7165,8 @@ while True:
    l=os.read(3,1024).decode().strip()
    if l.startswith('R:'):
     _,rs,cs=l.split(':');fcntl.ioctl(m,termios.TIOCSWINSZ,array.array('h',[int(rs),int(cs),0,0]))
+    try: os.kill(pid,signal.SIGWINCH)
+    except: pass
   except:pass
 `.trim();
         this.ptyProcess = (0, import_child_process.spawn)("python3", ["-c", pythonCode, claudePath, ...args], {
@@ -7141,6 +7221,13 @@ while True:
     if (this.layoutChangeHandler) {
       this.app.workspace.off("layout-change", this.layoutChangeHandler);
       this.app.workspace.off("resize", this.layoutChangeHandler);
+    }
+    if (this.stabilizeTimeoutId) {
+      clearTimeout(this.stabilizeTimeoutId);
+      this.stabilizeTimeoutId = null;
+    }
+    if (this.activeLeafHandler) {
+      this.app.workspace.off("active-leaf-change", this.activeLeafHandler);
     }
     if (this.ptyProcess) {
       this.ptyProcess.kill();

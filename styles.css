@@ -17,7 +17,7 @@
 
 /* Main container */
 .claude-code-terminal-container {
-	flex-grow: 1 !important;
+	flex: 1 1 auto !important;
 	height: 100% !important;
 	width: 100% !important;
 	display: flex !important;
@@ -26,11 +26,8 @@
 	overflow: hidden !important;
 	padding: 0 !important;
 	margin: 0 !important;
-	position: absolute !important;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
+	position: relative !important;
+	min-height: 0 !important;
 }
 
 /* Toolbar */

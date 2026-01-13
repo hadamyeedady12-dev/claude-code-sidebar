@@ -7,8 +7,8 @@ import { ProcessManager } from "./ProcessManager";
 import type { ProcessEvent, FileSystemAdapterWithBasePath } from "./types";
 import {
   VIEW_TYPE_CLAUDE_CODE,
-  TERMINAL_CONFIG,
   DARK_THEME,
+  LIGHT_THEME,
   FONT_FALLBACK,
   DEBOUNCE_FIT_MS,
   MIN_TERMINAL_SIZE,
@@ -19,12 +19,15 @@ export { VIEW_TYPE_CLAUDE_CODE };
 export class ClaudeCodeTerminalView extends ItemView {
   private terminal: Terminal | null = null;
   private fitAddon: FitAddon | null = null;
+  private webLinksAddon: WebLinksAddon | null = null;
   private processManager: ProcessManager | null = null;
   private terminalContainer: HTMLElement | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private fitDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   private terminalDataDisposable: { dispose(): void } | null = null;
   private isDisposed = false;
+  private isFitting = false;
+  private cachedFontFamily: string | null = null;
 
   constructor(
     leaf: WorkspaceLeaf,
@@ -79,22 +82,28 @@ export class ClaudeCodeTerminalView extends ItemView {
   private createToolbar(container: HTMLElement): void {
     const toolbar = container.createDiv({ cls: "claude-code-terminal-toolbar" });
 
-    const restartBtn = toolbar.createEl("button", { text: "Restart", cls: "mod-cta" });
+    const restartBtn = toolbar.createEl("button", { text: "Restart" });
     restartBtn.onclick = () => this.restartSession();
   }
 
   private initTerminal(): void {
     const fontFamily = this.getTerminalFont();
+    const { fontSize, theme } = this.plugin.settings;
+    const terminalTheme = theme === "light" ? LIGHT_THEME : DARK_THEME;
 
     this.terminal = new Terminal({
-      ...TERMINAL_CONFIG,
+      fontSize,
+      cursorBlink: true,
+      convertEol: true,
+      allowProposedApi: true,
       fontFamily,
-      theme: DARK_THEME,
+      theme: terminalTheme,
     });
 
     this.fitAddon = new FitAddon();
+    this.webLinksAddon = new WebLinksAddon();
     this.terminal.loadAddon(this.fitAddon);
-    this.terminal.loadAddon(new WebLinksAddon());
+    this.terminal.loadAddon(this.webLinksAddon);
 
     if (this.terminalContainer) {
       this.terminal.open(this.terminalContainer);
@@ -106,10 +115,15 @@ export class ClaudeCodeTerminalView extends ItemView {
   }
 
   private getTerminalFont(): string {
+    if (this.cachedFontFamily) {
+      return this.cachedFontFamily;
+    }
+
     const monospace = getComputedStyle(document.body)
       .getPropertyValue("--font-monospace")
       .trim();
-    return monospace ? `${monospace}, ${FONT_FALLBACK}` : FONT_FALLBACK;
+    this.cachedFontFamily = monospace ? `${monospace}, ${FONT_FALLBACK}` : FONT_FALLBACK;
+    return this.cachedFontFamily;
   }
 
   private setupResizeObserver(): void {
@@ -161,20 +175,32 @@ export class ClaudeCodeTerminalView extends ItemView {
       return;
     }
 
+    // Prevent concurrent fitting operations
+    if (this.isFitting) {
+      return;
+    }
+
     const rect = this.terminalContainer.getBoundingClientRect();
     if (rect.width < MIN_TERMINAL_SIZE.width || rect.height < MIN_TERMINAL_SIZE.height) {
       return;
     }
 
+    this.isFitting = true;
+
     // Use double requestAnimationFrame for better timing (master-of-opencode pattern)
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        if (this.isDisposed) return;
+        if (this.isDisposed) {
+          this.isFitting = false;
+          return;
+        }
         try {
           this.fitAddon?.fit();
           this.notifyResize();
         } catch (error) {
           console.debug("Fit failed:", error);
+        } finally {
+          this.isFitting = false;
         }
       });
     });
@@ -200,7 +226,7 @@ export class ClaudeCodeTerminalView extends ItemView {
     this.terminal.writeln("Starting Claude Code...\r\n");
 
     const claudePath = await this.plugin.findClaudePath();
-    const adapter = this.app.vault.adapter as FileSystemAdapterWithBasePath;
+    const adapter = this.app.vault.adapter as unknown as FileSystemAdapterWithBasePath;
     const vaultPath = adapter.basePath;
     const { cols, rows } = this.terminal;
 
@@ -247,13 +273,23 @@ export class ClaudeCodeTerminalView extends ItemView {
       this.processManager = null;
     }
 
+    // Dispose addons
+    if (this.webLinksAddon) {
+      this.webLinksAddon.dispose();
+      this.webLinksAddon = null;
+    }
+
+    if (this.fitAddon) {
+      this.fitAddon.dispose();
+      this.fitAddon = null;
+    }
+
     // Dispose terminal
     if (this.terminal) {
       this.terminal.dispose();
       this.terminal = null;
     }
 
-    this.fitAddon = null;
     this.terminalContainer = null;
   }
 }

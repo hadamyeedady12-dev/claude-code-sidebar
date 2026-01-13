@@ -1,5 +1,6 @@
-import { Plugin, PluginSettingTab, App, Setting } from "obsidian";
+import { Plugin, Notice } from "obsidian";
 import { ClaudeCodeTerminalView } from "./TerminalView";
+import { ClaudeCodeSettingTab } from "./SettingsTab";
 import { existsSync } from "fs";
 import { exec } from "child_process";
 import { promisify } from "util";
@@ -10,6 +11,7 @@ const execAsync = promisify(exec);
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {
   settings: ClaudeCodeSettings = DEFAULT_SETTINGS;
+  private cachedClaudePath: string | null = null;
 
   async onload(): Promise<void> {
     await this.loadSettings();
@@ -65,6 +67,11 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
       return this.settings.claudePath;
     }
 
+    // Return cached path if available
+    if (this.cachedClaudePath) {
+      return this.cachedClaudePath;
+    }
+
     const homedir = process.env.HOME ?? process.env.USERPROFILE ?? "";
     const isWindows = process.platform === "win32";
 
@@ -80,6 +87,7 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
     // Check common paths
     for (const p of paths) {
       if (p && existsSync(p)) {
+        this.cachedClaudePath = p;
         return p;
       }
     }
@@ -90,7 +98,8 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
       const { stdout } = await execAsync(cmd);
       const match = stdout.split(/\r?\n/).find((l) => l.trim());
       if (match) {
-        return match.trim();
+        this.cachedClaudePath = match.trim();
+        return this.cachedClaudePath;
       }
     } catch (error) {
       // Command not found - this is expected if claude isn't in PATH
@@ -99,33 +108,28 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
 
     return "claude";
   }
-}
 
-class ClaudeCodeSettingTab extends PluginSettingTab {
-  plugin: ClaudeCodeSidebarPlugin;
-
-  constructor(app: App, plugin: ClaudeCodeSidebarPlugin) {
-    super(app, plugin);
-    this.plugin = plugin;
+  /**
+   * Clear cached Claude path (call when settings change)
+   */
+  clearCachedClaudePath(): void {
+    this.cachedClaudePath = null;
   }
 
-  display(): void {
-    const { containerEl } = this;
-    containerEl.empty();
-
-    containerEl.createEl("h2", { text: "Claude Code Settings" });
-
-    new Setting(containerEl)
-      .setName("Claude CLI Path")
-      .setDesc("Path to the Claude CLI executable. Leave empty for auto-detection.")
-      .addText((text) =>
-        text
-          .setPlaceholder("/usr/local/bin/claude")
-          .setValue(this.plugin.settings.claudePath)
-          .onChange(async (value) => {
-            this.plugin.settings.claudePath = value;
-            await this.plugin.saveSettings();
-          })
-      );
+  /**
+   * Install Claude CLI via npm
+   */
+  async installClaudeCLI(): Promise<boolean> {
+    try {
+      new Notice("Installing Claude CLI...");
+      await execAsync("npm install -g @anthropic-ai/claude-code");
+      this.clearCachedClaudePath();
+      new Notice("Claude CLI installed successfully!");
+      return true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      new Notice(`Installation failed: ${message}`);
+      return false;
+    }
   }
 }

@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
 import { spawn, ChildProcess } from "child_process";
 import type { NodePtyProcess, PtyProcess, ProcessEvent } from "./types";
-import { isNodePtyProcess } from "./types";
 import { PTY_SCRIPT, UNIX_PATH_ADDITIONS } from "./constants";
 
 /**
@@ -81,7 +80,9 @@ export class ProcessManager extends EventEmitter {
         (this.ptyProcess as ChildProcess).stdin?.write(data);
       }
     } catch (error) {
-      console.error("Failed to write to process:", error);
+      const err = error instanceof Error ? error : new Error(String(error));
+      console.error("Failed to write to process:", err);
+      this.emit("event", { type: "error", error: err } as ProcessEvent);
     }
   }
 
@@ -107,7 +108,7 @@ export class ProcessManager extends EventEmitter {
   }
 
   /**
-   * Kill the process
+   * Kill the process gracefully with SIGTERM, then SIGKILL if needed
    */
   kill(): void {
     // Clean up event handlers first
@@ -115,18 +116,42 @@ export class ProcessManager extends EventEmitter {
 
     if (!this.ptyProcess) return;
 
-    try {
-      if (this.isNodePty) {
-        (this.ptyProcess as NodePtyProcess).kill();
-      } else {
-        (this.ptyProcess as ChildProcess).kill();
-      }
-    } catch (error) {
-      console.debug("Kill failed (process may have already ended):", error);
-    }
+    const proc = this.ptyProcess;
+    const wasNodePty = this.isNodePty;
 
+    // Clear references immediately
     this.ptyProcess = null;
     this.isNodePty = false;
+
+    try {
+      // Step 1: Send SIGTERM for graceful shutdown
+      if (wasNodePty) {
+        (proc as NodePtyProcess).kill("SIGTERM");
+      } else {
+        (proc as ChildProcess).kill("SIGTERM");
+      }
+    } catch {
+      // Process may have already ended
+      return;
+    }
+
+    // Step 2: Force kill with SIGKILL after 3 seconds if still running
+    const forceKillTimeout = setTimeout(() => {
+      try {
+        if (wasNodePty) {
+          (proc as NodePtyProcess).kill("SIGKILL");
+        } else {
+          (proc as ChildProcess).kill("SIGKILL");
+        }
+      } catch {
+        // Process already ended
+      }
+    }, 3000);
+
+    // Clear timeout if process exits normally
+    if (!wasNodePty) {
+      (proc as ChildProcess).once("exit", () => clearTimeout(forceKillTimeout));
+    }
   }
 
   /**
@@ -182,9 +207,11 @@ export class ProcessManager extends EventEmitter {
     rows: number
   ): Promise<void> {
     // Try node-pty first for better Windows support
-    let nodePty: { spawn: typeof spawn } | null = null;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let nodePty: any = null;
     try {
       // Dynamic import to avoid bundling node-pty if not available
+      // @ts-expect-error node-pty is optional
       nodePty = await import("node-pty").catch(() => null);
     } catch {
       nodePty = null;
@@ -199,7 +226,7 @@ export class ProcessManager extends EventEmitter {
           cwd,
           env,
           useConpty: true,
-        }) as unknown as NodePtyProcess;
+        }) as NodePtyProcess;
         this.isNodePty = true;
         this.setupNodePtyHandlers();
         return;
@@ -230,14 +257,27 @@ export class ProcessManager extends EventEmitter {
     _cols: number,
     _rows: number
   ): Promise<void> {
-    this.ptyProcess = spawn("python3", ["-c", PTY_SCRIPT, claudePath], {
-      cwd,
-      env,
-      stdio: ["pipe", "pipe", "pipe", "pipe"],
-    });
+    try {
+      // Try Python PTY first for full terminal emulation
+      this.ptyProcess = spawn("python3", ["-c", PTY_SCRIPT, claudePath], {
+        cwd,
+        env,
+        stdio: ["pipe", "pipe", "pipe", "pipe"],
+      });
 
-    this.isNodePty = false;
-    this.setupChildProcessHandlers();
+      this.isNodePty = false;
+      this.setupChildProcessHandlers();
+    } catch {
+      // Fallback to basic spawn if Python PTY fails
+      this.emit("event", {
+        type: "data",
+        data: "Warning: PTY unavailable, using basic mode\r\n",
+      } as ProcessEvent);
+
+      this.ptyProcess = spawn(claudePath, [], { cwd, env, shell: true });
+      this.isNodePty = false;
+      this.setupChildProcessHandlers();
+    }
   }
 
   /**
@@ -254,7 +294,7 @@ export class ProcessManager extends EventEmitter {
       this.emit("event", {
         type: "exit",
         code: exitCode,
-        signal: signal as NodeJS.Signals | null,
+        signal: signal != null ? (signal as unknown as NodeJS.Signals) : null,
       } as ProcessEvent);
       this.ptyProcess = null;
     });

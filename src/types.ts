@@ -18,26 +18,13 @@ export interface NodePtyProcess {
 export type PtyProcess = ChildProcess | NodePtyProcess;
 
 /**
- * Type guard to check if process is node-pty
- */
-export function isNodePtyProcess(process: PtyProcess): process is NodePtyProcess {
-  return "resize" in process && typeof (process as NodePtyProcess).resize === "function";
-}
-
-/**
- * Terminal session state
- */
-export interface SessionState {
-  isRunning: boolean;
-  pid: number | null;
-  startTime: Date | null;
-}
-
-/**
  * Plugin settings
  */
 export interface ClaudeCodeSettings {
   claudePath: string;
+  fontSize: number;
+  theme: "dark" | "light";
+  autoRestart: boolean;
 }
 
 /**

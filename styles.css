@@ -1,9 +1,14 @@
-/* Hide ALL Obsidian view headers and icons */
+/* Hide ALL Obsidian view headers, icons, and inputs */
 .workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header,
 .workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header *,
 .workspace-leaf-content[data-type="claude-code-terminal-view"] > .view-content > .nav-header,
 .workspace-leaf-content[data-type="claude-code-terminal-view"] .view-icon,
-.workspace-leaf-content[data-type="claude-code-terminal-view"] .clickable-icon:not(.claude-code-terminal-toolbar .clickable-icon) {
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .clickable-icon:not(.claude-code-terminal-toolbar .clickable-icon),
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .search-input-container,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .nav-header,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .nav-buttons-container,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] > .view-content > input,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] > .view-content > .search-input-container {
   display: none !important;
   width: 0 !important;
   height: 0 !important;
@@ -11,10 +16,17 @@
   pointer-events: none !important;
 }
 
-/* Remove the floating icon in terminal */
+/* Remove the floating icon and any inputs in terminal */
 .claude-code-terminal-container .view-icon,
 .claude-code-terminal-container > svg,
-.claude-code-terminal-container > .clickable-icon {
+.claude-code-terminal-container > .clickable-icon,
+.claude-code-terminal-container > input,
+.claude-code-terminal-container > .search-input-container {
+  display: none !important;
+}
+
+/* Hide any direct input children in view-content */
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-content > input {
   display: none !important;
 }
 
@@ -66,40 +78,117 @@
   right: 8px;
   display: flex;
   gap: 6px;
-  padding: 4px 8px;
-  background-color: rgba(30, 30, 30, 0.9);
-  border-radius: 6px;
   z-index: 10;
-  backdrop-filter: blur(4px);
 }
 
 .claude-code-terminal-toolbar button {
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 11px;
-  background-color: #3c3c3c;
-  color: #d4d4d4;
-  border: none;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #888;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: all 0.15s;
 }
 
 .claude-code-terminal-toolbar button:hover {
-  background-color: #505050;
-}
-
-.claude-code-terminal-toolbar button.mod-cta {
-  background-color: #0e639c;
-  color: white;
-}
-
-.claude-code-terminal-toolbar button.mod-cta:hover {
-  background-color: #1177bb;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #aaa;
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Hide any extra icons/buttons in toolbar */
 .claude-code-terminal-toolbar .clickable-icon {
   display: none !important;
+}
+
+/* xterm.js base styles (required - not bundled by esbuild) */
+.xterm {
+  cursor: text;
+  position: relative;
+  user-select: none;
+}
+
+.xterm.focus,
+.xterm:focus {
+  outline: none;
+}
+
+.xterm .xterm-helpers {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+
+.xterm .xterm-helper-textarea {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  position: absolute;
+  opacity: 0;
+  left: -9999em;
+  top: 0;
+  width: 0;
+  height: 0;
+  z-index: -5;
+  white-space: nowrap;
+  overflow: hidden;
+  resize: none;
+}
+
+.xterm .xterm-viewport {
+  background-color: #000;
+  overflow-y: scroll;
+  cursor: default;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.xterm .xterm-screen {
+  position: relative;
+}
+
+.xterm .xterm-screen canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.xterm .xterm-scroll-area {
+  visibility: hidden;
+}
+
+.xterm-char-measure-element {
+  display: inline-block;
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: -9999em;
+  line-height: normal;
+}
+
+.xterm .xterm-accessibility:not(.debug),
+.xterm .xterm-message {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  color: transparent;
+  pointer-events: none;
+}
+
+.xterm .live-region {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* xterm cursor */

@@ -10,17 +10,10 @@ export const VIEW_TYPE_CLAUDE_CODE = "claude-code-terminal-view";
  */
 export const DEFAULT_SETTINGS: ClaudeCodeSettings = {
   claudePath: "",
-};
-
-/**
- * Terminal configuration
- */
-export const TERMINAL_CONFIG = {
   fontSize: 13,
-  cursorBlink: true,
-  convertEol: true,
-  allowProposedApi: true,
-} as const;
+  theme: "dark",
+  autoRestart: false,
+};
 
 /**
  * Debounce timing (ms)
@@ -62,6 +55,34 @@ export const DARK_THEME: TerminalTheme = {
   brightBlue: "#a5d8ff",
   brightMagenta: "#e599f7",
   brightCyan: "#99e9f2",
+  brightWhite: "#ffffff",
+};
+
+/**
+ * Light terminal theme
+ */
+export const LIGHT_THEME: TerminalTheme = {
+  background: "#ffffff",
+  foreground: "#1a1a1a",
+  cursor: "#000000",
+  cursorAccent: "#ffffff",
+  selectionBackground: "#add6ff",
+  selectionForeground: "#000000",
+  black: "#000000",
+  red: "#c91b00",
+  green: "#00a600",
+  yellow: "#c7c400",
+  blue: "#0451a5",
+  magenta: "#bc05bc",
+  cyan: "#0598bc",
+  white: "#e0e0e0",
+  brightBlack: "#767676",
+  brightRed: "#e74856",
+  brightGreen: "#16c60c",
+  brightYellow: "#f9f1a5",
+  brightBlue: "#3b78ff",
+  brightMagenta: "#b4009e",
+  brightCyan: "#61d6d6",
   brightWhite: "#ffffff",
 };
 

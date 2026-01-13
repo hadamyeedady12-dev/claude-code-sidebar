@@ -7154,35 +7154,35 @@ var DEFAULT_SETTINGS = {
   claudePath: ""
 };
 var CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - CUTE VERSION -->
+  <!-- Claude Code Mascot - INVERTED VERSION -->
 
   <!-- Cute round ears -->
-  <rect x="2" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
-  <rect x="2" y="1" width="2" height="3" fill="currentColor"/>
-  <rect x="15" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
-  <rect x="16" y="1" width="2" height="3" fill="currentColor"/>
+  <rect x="2" y="0" width="3" height="2" rx="0.5" fill="var(--background-primary, transparent)"/>
+  <rect x="2" y="1" width="2" height="3" fill="var(--background-primary, transparent)"/>
+  <rect x="15" y="0" width="3" height="2" rx="0.5" fill="var(--background-primary, transparent)"/>
+  <rect x="16" y="1" width="2" height="3" fill="var(--background-primary, transparent)"/>
 
   <!-- Big round head -->
-  <rect x="4" y="2" width="12" height="2" rx="1" fill="currentColor"/>
-  <rect x="2" y="4" width="16" height="6" rx="1" fill="currentColor"/>
+  <rect x="4" y="2" width="12" height="2" rx="1" fill="var(--background-primary, transparent)"/>
+  <rect x="2" y="4" width="16" height="6" rx="1" fill="var(--background-primary, transparent)"/>
 
-  <!-- Big cute eyes (transparent cutout) -->
-  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="var(--background-primary, transparent)"/>
-  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="var(--background-primary, transparent)"/>
+  <!-- Big cute eyes (solid) -->
+  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
+  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
 
-  <!-- Cute small smile (transparent cutout) -->
-  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="var(--background-primary, transparent)"/>
+  <!-- Cute small smile (solid) -->
+  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="currentColor"/>
 
   <!-- Small cute arms -->
-  <rect x="0" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
-  <rect x="18" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
+  <rect x="0" y="5" width="2" height="3" rx="0.5" fill="var(--background-primary, transparent)"/>
+  <rect x="18" y="5" width="2" height="3" rx="0.5" fill="var(--background-primary, transparent)"/>
 
   <!-- Chubby body -->
-  <rect x="5" y="10" width="10" height="2" rx="0.5" fill="currentColor"/>
+  <rect x="5" y="10" width="10" height="2" rx="0.5" fill="var(--background-primary, transparent)"/>
 
   <!-- Cute stubby feet -->
-  <rect x="4" y="12" width="4" height="6" rx="1" fill="currentColor"/>
-  <rect x="12" y="12" width="4" height="6" rx="1" fill="currentColor"/>
+  <rect x="4" y="12" width="4" height="6" rx="1" fill="var(--background-primary, transparent)"/>
+  <rect x="12" y="12" width="4" height="6" rx="1" fill="var(--background-primary, transparent)"/>
 </svg>`;
 var ClaudeCodeSidebarPlugin = class extends import_obsidian2.Plugin {
   constructor() {

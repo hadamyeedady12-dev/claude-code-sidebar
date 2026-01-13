@@ -42,11 +42,25 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
 
 ## Windows 지원 (Beta)
 
+### 방법 A: Windows 전용 번들 사용 (권장)
+
+1. GitHub Releases에서 `claude-code-sidebar-windows.zip` 다운로드
+2. 압축 해제 후 `claude-code-sidebar` 폴더를 `Vault/.obsidian/plugins/`에 복사
+3. Obsidian 재시작
+
+### 방법 B: 수동 설치
+
 - Windows에서는 native PTY가 필요합니다. 플러그인 폴더(`Vault/.obsidian/plugins/claude-code-sidebar`)에서 아래 명령으로 설치하세요.
   ```bash
   npm install node-pty
   ```
 - 설치하지 않으면 기본 pipes 모드로 동작하며, 입력/리사이즈/표시가 제한될 수 있습니다.
+
+## 문제 해결 (Windows)
+
+- **입력이 느리거나 깨짐**: `node-pty`가 설치되어 있는지 확인
+- **리사이즈가 안 됨**: Obsidian 재시작 후 다시 시도
+- **Claude CLI 경로 문제**: PATH에 `claude`가 있는지 확인 (`where claude`)
 
 ## 사용 방법
 

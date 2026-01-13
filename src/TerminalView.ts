@@ -50,12 +50,13 @@ export class ClaudeCodeTerminalView extends ItemView {
     const container = this.containerEl.children[1] as HTMLElement;
     container.empty();
     container.addClass("claude-code-terminal-container");
+    container.style.position = "relative";
+
+    // Create toolbar first (positioned absolute)
+    this.createToolbar(container);
 
     // Create terminal wrapper
     this.terminalContainer = container.createDiv({ cls: "claude-code-xterm-wrapper" });
-
-    // Create toolbar
-    this.createToolbar(container);
 
     // Initialize terminal
     this.initTerminal();
@@ -91,18 +92,28 @@ export class ClaudeCodeTerminalView extends ItemView {
       fontSize: 13,
       allowProposedApi: true,
       theme: {
-        background: "#1e1e1e",
-        foreground: "#d4d4d4",
+        background: "#0d0d0d",
+        foreground: "#e0e0e0",
         cursor: "#ffffff",
+        cursorAccent: "#0d0d0d",
         selectionBackground: "#264f78",
-        black: "#1e1e1e",
-        red: "#f44747",
-        green: "#6a9955",
-        yellow: "#dcdcaa",
-        blue: "#569cd6",
-        magenta: "#c586c0",
-        cyan: "#4ec9b0",
-        white: "#d4d4d4",
+        selectionForeground: "#ffffff",
+        black: "#0d0d0d",
+        red: "#ff6b6b",
+        green: "#69db7c",
+        yellow: "#ffd43b",
+        blue: "#74c0fc",
+        magenta: "#da77f2",
+        cyan: "#66d9e8",
+        white: "#e0e0e0",
+        brightBlack: "#495057",
+        brightRed: "#ff8787",
+        brightGreen: "#8ce99a",
+        brightYellow: "#ffe066",
+        brightBlue: "#a5d8ff",
+        brightMagenta: "#e599f7",
+        brightCyan: "#99e9f2",
+        brightWhite: "#ffffff",
       },
     });
 

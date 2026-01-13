@@ -22,7 +22,7 @@ Run [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI directly i
 
 ### Manual Installation
 
-1. Download the latest release from [Releases](../../releases)
+1. Download the latest release from [Releases](https://github.com/hadamyeedady12-dev/claude-code-sidebar/releases)
 2. Extract to your vault's `.obsidian/plugins/claude-code-sidebar/` folder
 3. Reload Obsidian
 4. Enable the plugin in Settings → Community Plugins

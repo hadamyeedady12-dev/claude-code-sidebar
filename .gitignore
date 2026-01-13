@@ -17,5 +17,10 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Environment variables
+.env
+.env.*
+.env.local
+
 # Lock files (optional - you may want to keep package-lock.json)
 # package-lock.json

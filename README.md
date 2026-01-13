@@ -64,6 +64,12 @@ npm run build
 npm run dev
 ```
 
+## 감사의 글
+
+이 프로젝트는 [reallygood83](https://github.com/reallygood83)님의 [Master of OpenCode](https://github.com/reallygood83/master-of-opencode)를 기반으로 Claude Code용으로 재구성되었습니다.
+
+원본 프로젝트를 만들어주신 문정님께 진심으로 감사드립니다.
+
 ## 라이선스
 
 MIT

@@ -10,40 +10,31 @@ const DEFAULT_SETTINGS: ClaudeCodeSettings = {
 };
 
 const CLAUDE_ICON = `<svg viewBox="0 0 17 14" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - Exact Pixel Art -->
+  <!-- Claude Code Mascot - Outline Only -->
 
   <!-- Left ear -->
-  <rect x="1" y="0" width="2" height="2" fill="currentColor"/>
+  <rect x="1" y="0" width="2" height="2" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
   <!-- Right ear -->
-  <rect x="14" y="0" width="2" height="2" fill="currentColor"/>
-
-  <!-- Head top bar -->
-  <rect x="3" y="1" width="11" height="1" fill="currentColor"/>
+  <rect x="14" y="0" width="2" height="2" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
   <!-- Main head frame -->
-  <rect x="1" y="2" width="15" height="6" fill="currentColor"/>
+  <rect x="1" y="2" width="15" height="6" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
-  <!-- Inner face (darker - eyes area) -->
-  <rect x="3" y="3" width="11" height="4" fill="currentColor" opacity="0.6"/>
+  <!-- Left eye -->
+  <rect x="4" y="4" width="3" height="2" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
-  <!-- Left eye (dark) -->
-  <rect x="4" y="4" width="3" height="2" fill="currentColor" opacity="0.2"/>
+  <!-- Right eye -->
+  <rect x="10" y="4" width="3" height="2" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
-  <!-- Right eye (dark) -->
-  <rect x="10" y="4" width="3" height="2" fill="currentColor" opacity="0.2"/>
-
-  <!-- Mouth (dark) -->
-  <rect x="6" y="6" width="5" height="1" fill="currentColor" opacity="0.2"/>
-
-  <!-- Chin/neck bar -->
-  <rect x="4" y="8" width="9" height="1" fill="currentColor"/>
+  <!-- Mouth -->
+  <rect x="6" y="6" width="5" height="1" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
   <!-- Left foot -->
-  <rect x="3" y="9" width="3" height="5" fill="currentColor"/>
+  <rect x="3" y="9" width="3" height="5" fill="none" stroke="currentColor" stroke-width="0.8"/>
 
   <!-- Right foot -->
-  <rect x="11" y="9" width="3" height="5" fill="currentColor"/>
+  <rect x="11" y="9" width="3" height="5" fill="none" stroke="currentColor" stroke-width="0.8"/>
 </svg>`;
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {

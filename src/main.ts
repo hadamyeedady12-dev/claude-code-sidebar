@@ -22,12 +22,12 @@ const CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg"
   <rect x="4" y="2" width="12" height="2" rx="1" fill="currentColor"/>
   <rect x="2" y="4" width="16" height="6" rx="1" fill="currentColor"/>
 
-  <!-- Big cute eyes (white/hollow) - bigger = cuter -->
-  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.15"/>
-  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.15"/>
+  <!-- Big cute eyes (dark/visible) -->
+  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="#1e1e1e"/>
+  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="#1e1e1e"/>
 
-  <!-- Cute small smile -->
-  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="currentColor" opacity="0.2"/>
+  <!-- Cute small smile (dark/visible) -->
+  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="#1e1e1e"/>
 
   <!-- Small cute arms -->
   <rect x="0" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>

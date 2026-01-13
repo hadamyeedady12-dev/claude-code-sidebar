@@ -1,4 +1,4 @@
-import { Plugin, WorkspaceLeaf } from "obsidian";
+import { Plugin, WorkspaceLeaf, addIcon } from "obsidian";
 import { ClaudeCodeTerminalView, VIEW_TYPE_CLAUDE_CODE } from "./TerminalView";
 
 interface ClaudeCodeSettings {
@@ -9,6 +9,29 @@ const DEFAULT_SETTINGS: ClaudeCodeSettings = {
 	claudePath: "",
 };
 
+const CLAUDE_ICON = `<svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+  <!-- Antenna left -->
+  <rect x="15" y="5" width="10" height="15"/>
+  <rect x="10" y="0" width="10" height="10"/>
+  <!-- Antenna right -->
+  <rect x="75" y="5" width="10" height="15"/>
+  <rect x="80" y="0" width="10" height="10"/>
+  <!-- Head top bar -->
+  <rect x="20" y="15" width="60" height="10"/>
+  <!-- Main face -->
+  <rect x="10" y="25" width="80" height="35"/>
+  <!-- Eyes (cutout effect - darker) -->
+  <rect x="25" y="35" width="15" height="10" fill-opacity="0.3"/>
+  <rect x="60" y="35" width="15" height="10" fill-opacity="0.3"/>
+  <!-- Mouth area -->
+  <rect x="30" y="50" width="40" height="5" fill-opacity="0.3"/>
+  <!-- Body/chin -->
+  <rect x="25" y="60" width="50" height="10"/>
+  <!-- Feet -->
+  <rect x="20" y="75" width="15" height="20"/>
+  <rect x="65" y="75" width="15" height="20"/>
+</svg>`;
+
 export default class ClaudeCodeSidebarPlugin extends Plugin {
 	settings: ClaudeCodeSettings = DEFAULT_SETTINGS;
 
@@ -16,12 +39,14 @@ export default class ClaudeCodeSidebarPlugin extends Plugin {
 		console.log("Loading Claude Code Sidebar plugin");
 		await this.loadSettings();
 
+		addIcon("claude-code-icon", CLAUDE_ICON);
+
 		this.registerView(
 			VIEW_TYPE_CLAUDE_CODE,
 			(leaf: WorkspaceLeaf) => new ClaudeCodeTerminalView(leaf, this)
 		);
 
-		this.addRibbonIcon("terminal", "Open Claude Code", async () => {
+		this.addRibbonIcon("claude-code-icon", "Open Claude Code", async () => {
 			await this.activateView();
 		});
 

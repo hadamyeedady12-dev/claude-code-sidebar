@@ -7001,18 +7001,35 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
       });
     }
     this.terminal.onData((data) => {
-      if (this.ptyProcess && this.ptyProcess.stdin) {
+      if (!this.ptyProcess) {
+        return;
+      }
+      if (typeof this.ptyProcess.write === "function") {
+        this.ptyProcess.write(data);
+        return;
+      }
+      if (this.ptyProcess.stdin) {
         this.ptyProcess.stdin.write(data);
       }
     });
     await this.startSession();
   }
   notifyResize() {
-    if (this.ptyProcess && this.ptyProcess.stdio && this.ptyProcess.stdio[3]) {
-      const { cols, rows } = this.terminal;
-      if (cols < 2 || rows < 2) {
-        return;
+    if (!this.terminal) {
+      return;
+    }
+    const { cols, rows } = this.terminal;
+    if (cols < 2 || rows < 2) {
+      return;
+    }
+    if (this.ptyProcess && typeof this.ptyProcess.resize === "function") {
+      try {
+        this.ptyProcess.resize(cols, rows);
+      } catch (e) {
       }
+      return;
+    }
+    if (this.ptyProcess && this.ptyProcess.stdio && this.ptyProcess.stdio[3]) {
       try {
         this.ptyProcess.stdio[3].write(`R:${rows}:${cols}
 `);
@@ -7125,12 +7142,38 @@ var ClaudeCodeTerminalView = class extends import_obsidian.ItemView {
       env.ROWS = rows.toString();
       env.COLS = cols.toString();
       const args = [];
+      let usedNodePty = false;
       if (process.platform === "win32") {
-        this.ptyProcess = (0, import_child_process.spawn)(claudePath, args, {
-          cwd: vaultPath,
-          env,
-          shell: true
-        });
+        let nodePty = null;
+        try {
+          nodePty = require("node-pty");
+        } catch (e) {
+          nodePty = null;
+        }
+        if (nodePty && typeof nodePty.spawn === "function") {
+          try {
+            this.ptyProcess = nodePty.spawn(claudePath, args, {
+              name: "xterm-256color",
+              cols,
+              rows,
+              cwd: vaultPath,
+              env,
+              windowsHide: true,
+              useConpty: true
+            });
+            usedNodePty = true;
+          } catch (ptyError) {
+            usedNodePty = false;
+          }
+        }
+        if (!usedNodePty) {
+          (_a = this.terminal) == null ? void 0 : _a.writeln("Windows PTY backend not found. Falling back to basic pipes.");
+          this.ptyProcess = (0, import_child_process.spawn)(claudePath, args, {
+            cwd: vaultPath,
+            env,
+            shell: true
+          });
+        }
       } else {
         const pythonCode = `
 import os,sys,pty,select,array,fcntl,termios,signal
@@ -7175,25 +7218,40 @@ while True:
           stdio: ["pipe", "pipe", "pipe", "pipe"]
         });
       }
-      (_a = this.ptyProcess.stdout) == null ? void 0 : _a.on("data", (data) => {
-        var _a2;
-        (_a2 = this.terminal) == null ? void 0 : _a2.write(data);
-      });
-      (_b = this.ptyProcess.stderr) == null ? void 0 : _b.on("data", (data) => {
-        var _a2;
-        (_a2 = this.terminal) == null ? void 0 : _a2.write(data);
-      });
-      this.ptyProcess.on("error", (err) => {
-        var _a2;
-        (_a2 = this.terminal) == null ? void 0 : _a2.writeln(`\r
-[Fatal Error]: ${err.message}`);
-      });
-      this.ptyProcess.on("exit", (code, signal) => {
-        var _a2;
-        (_a2 = this.terminal) == null ? void 0 : _a2.writeln(`\r
+      if (usedNodePty && this.ptyProcess) {
+        this.ptyProcess.onData((data) => {
+          var _a2;
+          (_a2 = this.terminal) == null ? void 0 : _a2.write(data);
+        });
+        this.ptyProcess.onExit((event) => {
+          var _a2;
+          const code = event.exitCode;
+          const signal = event.signal;
+          (_a2 = this.terminal) == null ? void 0 : _a2.writeln(`\r
 \r
 --- Session Ended (Code: ${code}, Signal: ${signal}) ---`);
-      });
+        });
+      } else if (this.ptyProcess) {
+        (_a = this.ptyProcess.stdout) == null ? void 0 : _a.on("data", (data) => {
+          var _a2;
+          (_a2 = this.terminal) == null ? void 0 : _a2.write(data);
+        });
+        (_b = this.ptyProcess.stderr) == null ? void 0 : _b.on("data", (data) => {
+          var _a2;
+          (_a2 = this.terminal) == null ? void 0 : _a2.write(data);
+        });
+        this.ptyProcess.on("error", (err) => {
+          var _a2;
+          (_a2 = this.terminal) == null ? void 0 : _a2.writeln(`\r
+[Fatal Error]: ${err.message}`);
+        });
+        this.ptyProcess.on("exit", (code, signal) => {
+          var _a2;
+          (_a2 = this.terminal) == null ? void 0 : _a2.writeln(`\r
+\r
+--- Session Ended (Code: ${code}, Signal: ${signal}) ---`);
+        });
+      }
       this.terminal.focus();
     } catch (e) {
       this.terminal.writeln(`Error starting Claude Code: ${e}`);
@@ -7323,8 +7381,12 @@ var ClaudeCodeSidebarPlugin = class extends import_obsidian2.Plugin {
       }
     }
     try {
-      const { stdout } = await execAsync("which claude");
-      return stdout.trim();
+      const whichCommand = process.platform === "win32" ? "where claude" : "which claude";
+      const { stdout } = await execAsync(whichCommand);
+      const firstMatch = stdout.split(/\r?\n/).find((line) => line.trim().length > 0);
+      if (firstMatch) {
+        return firstMatch.trim();
+      }
     } catch (e) {
     }
     return "claude";

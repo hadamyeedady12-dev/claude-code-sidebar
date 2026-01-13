@@ -40,6 +40,14 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
   npm install -g @anthropic-ai/claude-code
   ```
 
+## Windows 지원 (Beta)
+
+- Windows에서는 native PTY가 필요합니다. 플러그인 폴더(`Vault/.obsidian/plugins/claude-code-sidebar`)에서 아래 명령으로 설치하세요.
+  ```bash
+  npm install node-pty
+  ```
+- 설치하지 않으면 기본 pipes 모드로 동작하며, 입력/리사이즈/표시가 제한될 수 있습니다.
+
 ## 사용 방법
 
 1. 왼쪽 리본에서 터미널 아이콘 클릭 또는
@@ -55,6 +63,12 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
 | 설정 | 톱니바퀴 아이콘 |
 
 ## 변경 로그
+
+### v1.0.3 (2026-01-13)
+
+**개선 사항:**
+- Windows에서 `node-pty`가 있을 때 ConPTY로 실행 (PTY 미설치 시 fallback 안내)
+- Windows에서 `where`로 Claude CLI 경로 탐색 지원
 
 ### v1.0.2 (2026-01-13)
 
@@ -82,7 +96,7 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
 
 ## 알려진 이슈
 
-- Windows에서는 제한적으로 동작할 수 있음
+- Windows에서는 `node-pty` 설치가 필요함 (미설치 시 제한적 동작)
 - `isDesktopOnly: true` - 모바일에서는 사용 불가
 
 ## 감사의 말

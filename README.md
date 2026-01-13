@@ -76,6 +76,17 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
 - Windows에서는 제한적으로 동작할 수 있음
 - `isDesktopOnly: true` - 모바일에서는 사용 불가
 
+## 감사의 말
+
+이 프로젝트는 [@reallygood83](https://github.com/reallygood83)님의 [Master of OpenCode](https://github.com/reallygood83/master-of-opencode)를 기반으로 Claude Code용으로 재구성되었습니다.
+
+원본 프로젝트를 만들어주신 **문정**님께 진심으로 감사드립니다.
+
+## 기여자
+
+- [@reallygood83](https://github.com/reallygood83) (문정) - 원본 프로젝트 제작
+- [@hadamyeedady12-dev](https://github.com/hadamyeedady12-dev) - Claude Code 버전 포크 및 버그 수정
+
 ## 라이선스
 
 MIT License

@@ -3,7 +3,7 @@ name: Release Obsidian Plugin
 on:
   push:
     tags:
-      - "*"
+      - "v*"
 
 jobs:
   build:
@@ -22,11 +22,20 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create Release
+      - name: Upload to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create "${{ github.ref_name }}" \
-            main.js manifest.json styles.css \
-            --title "${{ github.ref_name }}" \
-            --generate-notes
+          TAG="${{ github.ref_name }}"
+
+          # Check if release exists
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "Release $TAG exists, uploading assets..."
+            gh release upload "$TAG" main.js manifest.json styles.css --clobber
+          else
+            echo "Creating new release $TAG..."
+            gh release create "$TAG" \
+              main.js manifest.json styles.css \
+              --title "$TAG" \
+              --generate-notes
+          fi

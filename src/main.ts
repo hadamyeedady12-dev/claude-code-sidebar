@@ -9,27 +9,31 @@ const DEFAULT_SETTINGS: ClaudeCodeSettings = {
 	claudePath: "",
 };
 
-const CLAUDE_ICON = `<svg viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <!-- Antenna left -->
-  <rect x="15" y="5" width="10" height="15"/>
-  <rect x="10" y="0" width="10" height="10"/>
-  <!-- Antenna right -->
-  <rect x="75" y="5" width="10" height="15"/>
-  <rect x="80" y="0" width="10" height="10"/>
-  <!-- Head top bar -->
-  <rect x="20" y="15" width="60" height="10"/>
-  <!-- Main face -->
-  <rect x="10" y="25" width="80" height="35"/>
-  <!-- Eyes (cutout effect - darker) -->
-  <rect x="25" y="35" width="15" height="10" fill-opacity="0.3"/>
-  <rect x="60" y="35" width="15" height="10" fill-opacity="0.3"/>
-  <!-- Mouth area -->
-  <rect x="30" y="50" width="40" height="5" fill-opacity="0.3"/>
-  <!-- Body/chin -->
-  <rect x="25" y="60" width="50" height="10"/>
+const CLAUDE_ICON = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Claude Code Pixel Art Robot -->
+  <!-- Ears/Antenna -->
+  <rect x="18" y="8" width="8" height="12" fill="currentColor"/>
+  <rect x="74" y="8" width="8" height="12" fill="currentColor"/>
+
+  <!-- Head outline -->
+  <rect x="14" y="20" width="72" height="50" rx="4" fill="currentColor"/>
+
+  <!-- Face plate (lighter inner area) -->
+  <rect x="20" y="26" width="60" height="38" rx="2" fill="currentColor" fill-opacity="0.7"/>
+
+  <!-- Eyes - cute dot style -->
+  <rect x="30" y="36" width="10" height="12" rx="2" fill="currentColor" fill-opacity="0.2"/>
+  <rect x="60" y="36" width="10" height="12" rx="2" fill="currentColor" fill-opacity="0.2"/>
+
+  <!-- Cute smile -->
+  <rect x="38" y="52" width="24" height="4" rx="2" fill="currentColor" fill-opacity="0.2"/>
+
+  <!-- Body -->
+  <rect x="26" y="70" width="48" height="8" rx="2" fill="currentColor"/>
+
   <!-- Feet -->
-  <rect x="20" y="75" width="15" height="20"/>
-  <rect x="65" y="75" width="15" height="20"/>
+  <rect x="26" y="78" width="14" height="14" rx="2" fill="currentColor"/>
+  <rect x="60" y="78" width="14" height="14" rx="2" fill="currentColor"/>
 </svg>`;
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {

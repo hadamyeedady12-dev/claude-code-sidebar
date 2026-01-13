@@ -1,6 +1,6 @@
 {
   "name": "claude-code-sidebar",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Run Claude Code CLI in Obsidian sidebar with full terminal emulation",
   "main": "main.js",
   "scripts": {

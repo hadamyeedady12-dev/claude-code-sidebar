@@ -45,6 +45,14 @@ npm run build
 
 Copy `main.js`, `manifest.json`, and `styles.css` to your vault's plugins folder.
 
+### Troubleshooting
+
+**BRAT installation not working?**
+- Make sure you enter exactly: `hadamyeedady12-dev/claude-code-sidebar`
+- Update BRAT plugin to the latest version
+- Check your internet connection
+- Try "Add Beta plugin with frozen version" and enter version `1.0.0`
+
 ## Usage
 
 1. Click the terminal icon in the left ribbon, or

@@ -1,14 +1,21 @@
-/* Hide default Obsidian view header completely */
+/* Hide ALL Obsidian view headers and icons */
 .workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header,
-.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header-title-container,
-.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header-icon,
-.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header-title,
-.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-actions {
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header *,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] > .view-content > .nav-header,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-icon,
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .clickable-icon:not(.claude-code-terminal-toolbar .clickable-icon) {
   display: none !important;
+  width: 0 !important;
   height: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Remove the floating icon in terminal */
+.claude-code-terminal-container .view-icon,
+.claude-code-terminal-container > svg,
+.claude-code-terminal-container > .clickable-icon {
+  display: none !important;
 }
 
 /* Force dark terminal regardless of Obsidian theme */
@@ -90,22 +97,9 @@
   background-color: #1177bb;
 }
 
+/* Hide any extra icons/buttons in toolbar */
 .claude-code-terminal-toolbar .clickable-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  padding: 0;
-  border-radius: 4px;
-  cursor: pointer;
-  color: #888;
-  background: transparent;
-}
-
-.claude-code-terminal-toolbar .clickable-icon:hover {
-  background-color: #3c3c3c;
-  color: #d4d4d4;
+  display: none !important;
 }
 
 /* xterm cursor */

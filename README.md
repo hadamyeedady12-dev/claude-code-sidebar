@@ -94,7 +94,6 @@ Obsidian에서 Claude Code CLI를 사이드바 터미널로 실행하는 플러�
 ## 기여자
 
 - [@reallygood83](https://github.com/reallygood83) (문정) - 원본 프로젝트 제작
-- [@hadamyeedady12-dev](https://github.com/hadamyeedady12-dev) - Claude Code 버전 포크 및 버그 수정
 
 ## 라이선스
 

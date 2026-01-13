@@ -20,6 +20,13 @@ Run [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI directly i
 
 ## Installation
 
+### BRAT (Recommended)
+
+1. Install [BRAT](https://github.com/TfTHacker/obsidian42-brat) plugin from Community Plugins
+2. Open BRAT settings → "Add Beta plugin"
+3. Enter: `hadamyeedady12-dev/claude-code-sidebar`
+4. Click "Add Plugin" and enable it
+
 ### Manual Installation
 
 1. Download the latest release from [Releases](https://github.com/hadamyeedady12-dev/claude-code-sidebar/releases)

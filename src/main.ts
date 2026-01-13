@@ -10,32 +10,32 @@ const DEFAULT_SETTINGS: ClaudeCodeSettings = {
 };
 
 const CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - OUTLINE BODY + INVERTED -->
+  <!-- Claude Code Mascot - ALL OUTLINE -->
 
-  <!-- Ears (outline only) -->
+  <!-- Ears (outline) -->
   <rect x="2.5" y="0.5" width="2" height="3" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
   <rect x="15.5" y="0.5" width="2" height="3" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Big round head (outline only) -->
+  <!-- Big round head (outline) -->
   <rect x="2.5" y="3.5" width="15" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Big cute eyes (solid filled) -->
-  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
-  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
+  <!-- Big cute eyes (outline) -->
+  <rect x="4.5" y="5.5" width="3" height="2" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+  <rect x="12.5" y="5.5" width="3" height="2" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Cute small smile (solid filled) -->
-  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="currentColor"/>
+  <!-- Cute small smile (outline) -->
+  <rect x="8.5" y="8" width="3" height="1" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Small cute arms (solid filled) -->
-  <rect x="0" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
-  <rect x="18" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
+  <!-- Small cute arms (outline) -->
+  <rect x="0.5" y="5.5" width="1.5" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+  <rect x="18" y="5.5" width="1.5" height="2.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Chubby body (outline only) -->
-  <rect x="5.5" y="10.5" width="9" height="1" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+  <!-- Chubby body (outline) -->
+  <rect x="5.5" y="10.5" width="9" height="1.5" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Cute stubby feet (solid filled) -->
-  <rect x="4" y="12" width="4" height="6" rx="1" fill="currentColor"/>
-  <rect x="12" y="12" width="4" height="6" rx="1" fill="currentColor"/>
+  <!-- Cute stubby feet (outline) -->
+  <rect x="4.5" y="12.5" width="3" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
+  <rect x="12.5" y="12.5" width="3" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
 </svg>`;
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {

@@ -6,9 +6,12 @@ Obsidian 사이드바에서 Claude Code CLI를 직접 실행할 수 있는 플�
 
 - xterm.js를 사용한 완전한 터미널 에뮬레이션
 - 색상 지원 (256색 + 트루컬러)
+- 다크 터미널 테마 (실제 터미널처럼 어두운 배경)
 - 자동 터미널 크기 조정
 - 크로스 플랫폼 지원 (macOS, Linux, Windows)
 - Claude CLI 경로 자동 감지
+- 툴바 재시작 버튼
+- CLI 설치 기능 내장
 
 ## 설치 방법
 
@@ -40,7 +43,13 @@ Obsidian 사이드바에서 Claude Code CLI를 직접 실행할 수 있는 플�
 
 설정 → Claude Code Sidebar에서 설정 가능:
 
-- **Claude CLI 경로**: Claude CLI 사용자 지정 경로 (기본값: 자동 감지)
+| 설정 | 설명 |
+|------|------|
+| **Claude CLI 경로** | Claude CLI 사용자 지정 경로 (기본값: 자동 감지) |
+| **Font Size** | 터미널 폰트 크기 (10-24, 기본값: 13) |
+| **Theme** | 터미널 테마 (Dark / Light) |
+| **Auto Restart** | 세션이 예기치 않게 종료되면 자동 재시작 |
+| **Install Claude CLI** | npm을 통해 Claude CLI 설치 |
 
 ## 플랫폼별 참고 사항
 

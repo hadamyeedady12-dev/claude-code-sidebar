@@ -51,6 +51,12 @@ The terminal opens in the right sidebar with Claude Code ready to use.
 - Python PTY wrapper for proper terminal handling
 - Obsidian Plugin API
 
+## Contributors
+
+- [@hadamyeedady12-dev](https://github.com/hadamyeedady12-dev) - Creator
+- [@reallygood83](https://github.com/reallygood83)
+- [@master-of-opencode](https://github.com/master-of-opencode)
+
 ## License
 
 MIT

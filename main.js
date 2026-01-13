@@ -7154,33 +7154,30 @@ var DEFAULT_SETTINGS = {
   claudePath: ""
 };
 var CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - FULL VERSION -->
+  <!-- Claude Code Mascot - OUTLINE BODY + INVERTED -->
 
-  <!-- Cute round ears -->
-  <rect x="2" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
-  <rect x="2" y="1" width="2" height="3" fill="currentColor"/>
-  <rect x="15" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
-  <rect x="16" y="1" width="2" height="3" fill="currentColor"/>
+  <!-- Ears (outline only) -->
+  <rect x="2.5" y="0.5" width="2" height="3" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
+  <rect x="15.5" y="0.5" width="2" height="3" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Big round head -->
-  <rect x="4" y="2" width="12" height="2" rx="1" fill="currentColor"/>
-  <rect x="2" y="4" width="16" height="6" rx="1" fill="currentColor"/>
+  <!-- Big round head (outline only) -->
+  <rect x="2.5" y="3.5" width="15" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Big cute eyes (transparent hole) -->
-  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="var(--background-primary, #fff)"/>
-  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="var(--background-primary, #fff)"/>
+  <!-- Big cute eyes (solid filled) -->
+  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
+  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="currentColor"/>
 
-  <!-- Cute small smile (transparent hole) -->
-  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="var(--background-primary, #fff)"/>
+  <!-- Cute small smile (solid filled) -->
+  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="currentColor"/>
 
-  <!-- Small cute arms -->
+  <!-- Small cute arms (solid filled) -->
   <rect x="0" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
   <rect x="18" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
 
-  <!-- Chubby body -->
-  <rect x="5" y="10" width="10" height="2" rx="0.5" fill="currentColor"/>
+  <!-- Chubby body (outline only) -->
+  <rect x="5.5" y="10.5" width="9" height="1" rx="0.5" fill="none" stroke="currentColor" stroke-width="1"/>
 
-  <!-- Cute stubby feet -->
+  <!-- Cute stubby feet (solid filled) -->
   <rect x="4" y="12" width="4" height="6" rx="1" fill="currentColor"/>
   <rect x="12" y="12" width="4" height="6" rx="1" fill="currentColor"/>
 </svg>`;

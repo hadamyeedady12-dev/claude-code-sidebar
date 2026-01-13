@@ -1,0 +1,128 @@
+/* Claude Code Sidebar - Terminal Styles */
+
+/* Hide view header for cleaner look */
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header {
+	display: none !important;
+}
+
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-content {
+	padding: 0 !important;
+	margin: 0 !important;
+	overflow: hidden !important;
+	display: flex !important;
+	flex-direction: column !important;
+	height: 100% !important;
+	width: 100% !important;
+}
+
+/* Main container */
+.claude-code-terminal-container {
+	flex-grow: 1 !important;
+	height: 100% !important;
+	width: 100% !important;
+	display: flex !important;
+	flex-direction: column !important;
+	background-color: #1e1e1e !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	position: absolute !important;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+/* Toolbar */
+.claude-code-terminal-toolbar {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding: 4px;
+	position: absolute;
+	top: 8px;
+	right: 18px;
+	z-index: 100;
+	gap: 4px;
+	opacity: 0.3;
+	transition: opacity 0.3s ease;
+}
+
+.claude-code-terminal-toolbar:hover {
+	opacity: 1;
+}
+
+.claude-code-terminal-toolbar button {
+	padding: 2px 8px;
+	font-size: 0.8em;
+	height: unset;
+}
+
+.claude-code-terminal-toolbar .clickable-icon {
+	color: var(--text-muted);
+}
+
+.claude-code-terminal-toolbar .clickable-icon:hover {
+	color: var(--text-normal);
+}
+
+/* xterm wrapper */
+.claude-code-xterm-wrapper {
+	flex: 1 !important;
+	width: 100% !important;
+	height: 100% !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	margin: 0 !important;
+	position: relative !important;
+	background-color: #1e1e1e !important;
+}
+
+.claude-code-xterm-wrapper .terminal {
+	height: 100% !important;
+	padding: 4px !important;
+}
+
+.claude-code-xterm-wrapper .xterm-screen {
+	width: 100% !important;
+}
+
+.claude-code-xterm-wrapper .xterm-viewport {
+	width: 100% !important;
+	overflow-y: auto !important;
+}
+
+/* Force xterm to respect container boundaries */
+.claude-code-xterm-wrapper .xterm {
+	width: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
+}
+
+.claude-code-xterm-wrapper .xterm-screen {
+	width: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
+}
+
+.claude-code-xterm-wrapper .xterm-rows {
+	width: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
+}
+
+.claude-code-xterm-wrapper .xterm-screen canvas {
+	max-width: 100% !important;
+}
+
+.claude-code-xterm-wrapper .xterm-text-layer {
+	width: 100% !important;
+	max-width: 100% !important;
+	overflow: hidden !important;
+}
+
+.claude-code-xterm-wrapper .xterm-helper-textarea {
+	position: absolute !important;
+	opacity: 0 !important;
+	left: -9999px !important;
+}

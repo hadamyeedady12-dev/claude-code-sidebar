@@ -1,0 +1,25 @@
+{
+	"name": "claude-code-sidebar",
+	"version": "1.0.0",
+	"description": "Run Claude Code CLI in Obsidian sidebar",
+	"main": "main.js",
+	"scripts": {
+		"dev": "node esbuild.config.mjs",
+		"build": "node esbuild.config.mjs production"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^20.10.0",
+		"builtin-modules": "^3.3.0",
+		"esbuild": "^0.20.0",
+		"obsidian": "latest",
+		"typescript": "^5.3.0"
+	},
+	"dependencies": {
+		"@xterm/addon-fit": "^0.10.0",
+		"@xterm/addon-web-links": "^0.11.0",
+		"@xterm/xterm": "^5.5.0"
+	}
+}

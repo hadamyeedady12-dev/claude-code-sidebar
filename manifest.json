@@ -1,0 +1,9 @@
+{
+	"id": "claude-code-sidebar",
+	"name": "Claude Code Sidebar",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Run Claude Code CLI in Obsidian sidebar with full terminal emulation",
+	"author": "songhyeon-u",
+	"isDesktopOnly": true
+}

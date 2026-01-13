@@ -9,38 +9,42 @@ const DEFAULT_SETTINGS: ClaudeCodeSettings = {
 	claudePath: "",
 };
 
-const CLAUDE_ICON = `<svg viewBox="0 0 17 15" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - Pixel Perfect -->
+const CLAUDE_ICON = `<svg viewBox="0 0 21 16" xmlns="http://www.w3.org/2000/svg">
+  <!-- Claude Code Mascot - With visible eyes and arms -->
 
-  <!-- Left ear (2x3) -->
-  <rect x="1" y="0" width="2" height="3" fill="currentColor"/>
+  <!-- Left ear -->
+  <rect x="3" y="0" width="2" height="3" fill="currentColor"/>
 
-  <!-- Right ear (2x3) -->
-  <rect x="14" y="0" width="2" height="3" fill="currentColor"/>
+  <!-- Right ear -->
+  <rect x="16" y="0" width="2" height="3" fill="currentColor"/>
 
   <!-- Head top bar -->
-  <rect x="3" y="1" width="11" height="2" fill="currentColor"/>
+  <rect x="5" y="1" width="11" height="2" fill="currentColor"/>
 
-  <!-- Main head body -->
-  <rect x="1" y="3" width="15" height="5" fill="currentColor"/>
+  <!-- Main head - built around eyes -->
+  <rect x="3" y="3" width="15" height="1" fill="currentColor"/>
+  <rect x="3" y="4" width="2" height="2" fill="currentColor"/>
+  <rect x="8" y="4" width="5" height="2" fill="currentColor"/>
+  <rect x="16" y="4" width="2" height="2" fill="currentColor"/>
+  <rect x="3" y="6" width="15" height="2" fill="currentColor"/>
 
-  <!-- Left eye (dark/hollow) -->
-  <rect x="3" y="4" width="3" height="2" fill="currentColor" opacity="0.3"/>
+  <!-- Mouth (visible dark line) -->
+  <rect x="7" y="7" width="7" height="1" fill="currentColor" opacity="0.35"/>
 
-  <!-- Right eye (dark/hollow) -->
-  <rect x="11" y="4" width="3" height="2" fill="currentColor" opacity="0.3"/>
+  <!-- Left arm -->
+  <rect x="0" y="4" width="2" height="4" fill="currentColor"/>
 
-  <!-- Mouth (dark/hollow) -->
-  <rect x="5" y="7" width="7" height="1" fill="currentColor" opacity="0.3"/>
+  <!-- Right arm -->
+  <rect x="19" y="4" width="2" height="4" fill="currentColor"/>
 
-  <!-- Chin/neck bar -->
-  <rect x="3" y="8" width="11" height="2" fill="currentColor"/>
+  <!-- Chin/body bar -->
+  <rect x="5" y="8" width="11" height="2" fill="currentColor"/>
 
   <!-- Left foot -->
-  <rect x="2" y="10" width="3" height="5" fill="currentColor"/>
+  <rect x="4" y="10" width="3" height="6" fill="currentColor"/>
 
   <!-- Right foot -->
-  <rect x="12" y="10" width="3" height="5" fill="currentColor"/>
+  <rect x="14" y="10" width="3" height="6" fill="currentColor"/>
 </svg>`;
 
 export default class ClaudeCodeSidebarPlugin extends Plugin {

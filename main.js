@@ -7153,31 +7153,26 @@ while True:
 var DEFAULT_SETTINGS = {
   claudePath: ""
 };
-var CLAUDE_ICON = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Pixel Art Robot -->
-  <!-- Ears/Antenna -->
-  <rect x="18" y="8" width="8" height="12" fill="currentColor"/>
-  <rect x="74" y="8" width="8" height="12" fill="currentColor"/>
-
-  <!-- Head outline -->
-  <rect x="14" y="20" width="72" height="50" rx="4" fill="currentColor"/>
-
-  <!-- Face plate (lighter inner area) -->
-  <rect x="20" y="26" width="60" height="38" rx="2" fill="currentColor" fill-opacity="0.7"/>
-
-  <!-- Eyes - cute dot style -->
-  <rect x="30" y="36" width="10" height="12" rx="2" fill="currentColor" fill-opacity="0.2"/>
-  <rect x="60" y="36" width="10" height="12" rx="2" fill="currentColor" fill-opacity="0.2"/>
-
-  <!-- Cute smile -->
-  <rect x="38" y="52" width="24" height="4" rx="2" fill="currentColor" fill-opacity="0.2"/>
-
-  <!-- Body -->
-  <rect x="26" y="70" width="48" height="8" rx="2" fill="currentColor"/>
-
-  <!-- Feet -->
-  <rect x="26" y="78" width="14" height="14" rx="2" fill="currentColor"/>
-  <rect x="60" y="78" width="14" height="14" rx="2" fill="currentColor"/>
+var CLAUDE_ICON = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Claude Code Mascot - Pixel Art Style -->
+  <!-- Left ear -->
+  <rect x="4" y="2" width="3" height="4" fill="currentColor"/>
+  <!-- Right ear -->
+  <rect x="17" y="2" width="3" height="4" fill="currentColor"/>
+  <!-- Head -->
+  <rect x="3" y="5" width="18" height="11" fill="currentColor"/>
+  <!-- Left eye (hollow) -->
+  <rect x="6" y="8" width="4" height="4" fill="var(--background-primary, #1e1e1e)"/>
+  <!-- Right eye (hollow) -->
+  <rect x="14" y="8" width="4" height="4" fill="var(--background-primary, #1e1e1e)"/>
+  <!-- Mouth (hollow) -->
+  <rect x="8" y="13" width="8" height="2" fill="var(--background-primary, #1e1e1e)"/>
+  <!-- Body/Neck -->
+  <rect x="7" y="16" width="10" height="2" fill="currentColor"/>
+  <!-- Left foot -->
+  <rect x="5" y="18" width="5" height="4" fill="currentColor"/>
+  <!-- Right foot -->
+  <rect x="14" y="18" width="5" height="4" fill="currentColor"/>
 </svg>`;
 var ClaudeCodeSidebarPlugin = class extends import_obsidian2.Plugin {
   constructor() {

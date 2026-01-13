@@ -7153,42 +7153,36 @@ while True:
 var DEFAULT_SETTINGS = {
   claudePath: ""
 };
-var CLAUDE_ICON = `<svg viewBox="0 0 21 16" xmlns="http://www.w3.org/2000/svg">
-  <!-- Claude Code Mascot - With visible eyes and arms -->
+var CLAUDE_ICON = `<svg viewBox="0 0 20 18" xmlns="http://www.w3.org/2000/svg">
+  <!-- Claude Code Mascot - CUTE VERSION -->
 
-  <!-- Left ear -->
-  <rect x="3" y="0" width="2" height="3" fill="currentColor"/>
+  <!-- Cute round ears -->
+  <rect x="2" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
+  <rect x="2" y="1" width="2" height="3" fill="currentColor"/>
+  <rect x="15" y="0" width="3" height="2" rx="0.5" fill="currentColor"/>
+  <rect x="16" y="1" width="2" height="3" fill="currentColor"/>
 
-  <!-- Right ear -->
-  <rect x="16" y="0" width="2" height="3" fill="currentColor"/>
+  <!-- Big round head -->
+  <rect x="4" y="2" width="12" height="2" rx="1" fill="currentColor"/>
+  <rect x="2" y="4" width="16" height="6" rx="1" fill="currentColor"/>
 
-  <!-- Head top bar -->
-  <rect x="5" y="1" width="11" height="2" fill="currentColor"/>
+  <!-- Big cute eyes (white/hollow) - bigger = cuter -->
+  <rect x="4" y="5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.15"/>
+  <rect x="12" y="5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.15"/>
 
-  <!-- Main head - built around eyes -->
-  <rect x="3" y="3" width="15" height="1" fill="currentColor"/>
-  <rect x="3" y="4" width="2" height="2" fill="currentColor"/>
-  <rect x="8" y="4" width="5" height="2" fill="currentColor"/>
-  <rect x="16" y="4" width="2" height="2" fill="currentColor"/>
-  <rect x="3" y="6" width="15" height="2" fill="currentColor"/>
+  <!-- Cute small smile -->
+  <rect x="8" y="8" width="4" height="1" rx="0.5" fill="currentColor" opacity="0.2"/>
 
-  <!-- Mouth (visible dark line) -->
-  <rect x="7" y="7" width="7" height="1" fill="currentColor" opacity="0.35"/>
+  <!-- Small cute arms -->
+  <rect x="0" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
+  <rect x="18" y="5" width="2" height="3" rx="0.5" fill="currentColor"/>
 
-  <!-- Left arm -->
-  <rect x="0" y="4" width="2" height="4" fill="currentColor"/>
+  <!-- Chubby body -->
+  <rect x="5" y="10" width="10" height="2" rx="0.5" fill="currentColor"/>
 
-  <!-- Right arm -->
-  <rect x="19" y="4" width="2" height="4" fill="currentColor"/>
-
-  <!-- Chin/body bar -->
-  <rect x="5" y="8" width="11" height="2" fill="currentColor"/>
-
-  <!-- Left foot -->
-  <rect x="4" y="10" width="3" height="6" fill="currentColor"/>
-
-  <!-- Right foot -->
-  <rect x="14" y="10" width="3" height="6" fill="currentColor"/>
+  <!-- Cute stubby feet -->
+  <rect x="4" y="12" width="4" height="6" rx="1" fill="currentColor"/>
+  <rect x="12" y="12" width="4" height="6" rx="1" fill="currentColor"/>
 </svg>`;
 var ClaudeCodeSidebarPlugin = class extends import_obsidian2.Plugin {
   constructor() {

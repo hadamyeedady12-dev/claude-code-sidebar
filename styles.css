@@ -1,3 +1,8 @@
+/* Hide default Obsidian view header */
+.workspace-leaf-content[data-type="claude-code-terminal-view"] .view-header {
+  display: none !important;
+}
+
 /* Force dark terminal regardless of Obsidian theme */
 .workspace-leaf-content[data-type="claude-code-terminal-view"] {
   background-color: #0d0d0d !important;

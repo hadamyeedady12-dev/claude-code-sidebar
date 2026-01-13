@@ -51,6 +51,14 @@ The terminal opens in the right sidebar with Claude Code ready to use.
 - Python PTY wrapper for proper terminal handling
 - Obsidian Plugin API
 
+## Acknowledgments
+
+이 프로젝트는 [@master-of-opencode](https://github.com/master-of-opencode)님의 오픈소스 프로젝트를 기반으로 제작되었습니다.
+
+문정님께서 공개해주신 코드 덕분에 Obsidian에서 Claude Code를 실행할 수 있는 플러그인을 만들 수 있었습니다. 오픈소스 정신으로 지식을 나눠주신 것에 진심으로 감사드립니다.
+
+This project was built upon the open source work of [@master-of-opencode](https://github.com/master-of-opencode). Thank you for sharing your knowledge with the community.
+
 ## Contributors
 
 - [@hadamyeedady12-dev](https://github.com/hadamyeedady12-dev) - Creator
